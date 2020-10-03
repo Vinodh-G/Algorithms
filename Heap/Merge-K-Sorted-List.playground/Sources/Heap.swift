@@ -33,24 +33,20 @@ public struct Heap <Element: Comparable> {
         self.elements = elements
         self.type = heapType
         for index in stride(from: elements.count / 2, through: 0, by: -1) {
-            heapify(from: index)
+            heapifyDown(from: index)
         }
     }
 
     public mutating func insert(element: Element) {
         elements.append(element)
-        var pIndex = parentIndex(for: elements.count - 1)
-        while pIndex >= 0 {
-            heapify(from: pIndex)
-            pIndex = parentIndex(for: pIndex)
-        }
+        heapifyUp(for: elements.count - 1)
     }
 
     public mutating func deleteTop() -> Element? {
         guard elements.count > 0 else { return nil }
         elements.swapAt(0, elements.count - 1)
         let deletedItem = elements.popLast()
-        heapify(from: 0)
+        heapifyDown(from: 0)
         return deletedItem
     }
 
@@ -59,7 +55,7 @@ public struct Heap <Element: Comparable> {
         return (index - 1) / 2
     }
 
-    private mutating func heapify(from index: Int) {
+    private mutating func heapifyDown(from index: Int) {
         let leftIndex = index * 2  + 1
         let rightIndex = leftIndex + 1
 
@@ -76,7 +72,52 @@ public struct Heap <Element: Comparable> {
 
         if heapIndex != index {
             elements.swapAt(heapIndex, index)
-            heapify(from: heapIndex)
+            heapifyDown(from: heapIndex)
+        }
+    }
+    
+    private mutating func heapifyUp(for index: Int) {
+        let pIndex = parentIndex(for: index)
+        
+        if pIndex >= 0 {
+            if compare(type, elements[index], elements[pIndex]) {
+                elements.swapAt(pIndex, index)
+                heapifyUp(for: pIndex)
+            }
         }
     }
 }
+
+
+// Time Complexity analysis
+/*
+ 
+    Creating: creating an heap from array of size n
+ 
+    As we know the all the leaf nodes are heap, but we need to iterate all the non leaf nodes and check if it statisfies the
+    heap condition, for example above will use min heap, where root node value is always less than left and right child node.
+ 
+    so we are iterating the array from n/2 through 0 which has linear time of n and inside each iterarion we check heap
+    condition and apply heap which a time complexity of log n, where h is height of tree.
+ 
+    time comlexity of creating array into heap is (n log n)
+ 
+ 
+ 
+    Insert Element in Heap :
+ 
+    Whenever we insert an element in a heap we always add the element at the end, and then we try to apply heap conditions
+    to parent of the last inserted element, and recursively check for there parents, until we reach root element
+    
+    which will be like iterating through the height of the heap tree
+    time comlexity of inserting element into heap is (log n)
+
+ 
+    Delete Top Element (Smallest/ Biggest) in Heap :
+
+    Whenever we delete top element in a heap we always swap the last element to the top, and then we try to apply
+    heapifyDown until it reaches the leaf.
+    which will be like iterating through the height of the heap tree
+    time comlexity of inserting element into heap is (log n)
+ 
+ */

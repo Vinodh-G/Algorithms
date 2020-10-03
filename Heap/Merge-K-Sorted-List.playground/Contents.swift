@@ -47,4 +47,3 @@ let sortedArr: [[Int]] = [
 ]
 
 print(merge(sortedLists: sortedArr))
-
