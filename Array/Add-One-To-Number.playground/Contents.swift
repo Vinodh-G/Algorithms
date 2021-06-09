@@ -24,10 +24,14 @@ func plusOne(numDigits: [Int]) -> [Int] {
         index -= 1
     }
     
+    if carry > 0 {
+        result.append(carry)
+    }
+    
     return result.reversed()
 }
 
-print(plusOne(numDigits: [1, 2, 3]))
+print(plusOne(numDigits: [9, 9, 9]))
 
 print(plusOne(numDigits: [0, 7, 9, 9]))
 

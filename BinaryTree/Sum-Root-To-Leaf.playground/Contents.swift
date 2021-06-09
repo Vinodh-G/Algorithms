@@ -64,11 +64,11 @@ func pathval(path: [Int]) -> Int {
  8
  
  */
-if let tree1 = BinaryTree.levelorderInsert(values: [1, 2, 3, 4, 5, 6, 7, 8]) {
-    tree1.disp()
-    let sum = sumRootToLeaf(node: tree1.root)
-    print(sum)
-}
+//if let tree1 = BinaryTree.levelorderInsert(values: [1, 2, 3, 4, 5, 6, 7, 8]) {
+//    tree1.disp()
+//    let sum = sumRootToLeaf(node: tree1.root)
+//    print(sum)
+//}
 
 /*
    1
@@ -82,7 +82,9 @@ if let tree1 = BinaryTree.levelorderInsert(values: [1, 2, 3, 4, 5, 6, 7, 8]) {
 
 if let tree2 = BinaryTree.levelorderInsert(values: [1, 2, 3, 4, 5, -1, 6, 7, 8, -1, -1, -1, -1, -1, -1, -1, -1]) {
     tree2.disp()
-    let sum = sumRootToLeaf(node: tree2.root)
-    print(sum)
+//    print(tree2.height)
+//    print(tree2.diameter)
+//    let sum = sumRootToLeaf(node: tree2.root)
+//    print(sum)
 }
 

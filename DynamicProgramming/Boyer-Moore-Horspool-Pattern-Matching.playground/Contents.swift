@@ -2,15 +2,11 @@ import UIKit
 
 var str = "Hello, playground"
 
-
 func indexTable(pattern: String) -> [Character: Int] {
-
+    guard !pattern.isEmpty else { return [:] }
     var table: [Character: Int] = [:]
-    guard !pattern.isEmpty else { return table }
-
-    let chars: [Character] = Array(pattern)
-    for index in 0..<chars.count {
-        table[chars[index]] = pattern.count - index - 1
+    for (index, ch) in pattern.enumerated() {
+        table[ch] = pattern.count - index - 1
     }
     return table
 }
@@ -18,31 +14,35 @@ func indexTable(pattern: String) -> [Character: Int] {
 func patternMatching(string: String, pattern: String) -> Int {
     guard !string.isEmpty, !pattern.isEmpty else { return -1 }
 
-    let table = indexTable(pattern: pattern)
-    print(table)
-    let strArr: [Character] = Array(string)
-    let pattArr: [Character] =  Array(pattern)
-
-    var strIndex = 0
-    while strIndex + pattArr.count < (strArr.count - pattArr.count) {
-        var patternIndex = pattArr.count - 1
-
-        while pattArr[patternIndex] == strArr[strIndex + patternIndex] {
+    let shiftTable = indexTable(pattern: pattern)
+    print(shiftTable)
+    var strIndex: Int = 0
+    var patternIndex: Int = pattern.count - 1
+    let stringArr: [Character] = Array(string)
+    let patternArr: [Character] = Array(pattern)
+    
+    while (strIndex + patternIndex) < stringArr.count {
+        
+        patternIndex = pattern.count - 1
+        while patternIndex >= 0,
+              patternArr[patternIndex] == stringArr[patternIndex + strIndex] {
             patternIndex -= 1
-            if patternIndex < 0 {
-                return strIndex
-            }
         }
-
-        if let shiftVal = table[strArr[strIndex + patternIndex]] {
-            strIndex += shiftVal
+        
+        if patternIndex < 0 {
+            return strIndex
+        }
+        
+        
+        if let shifVal = shiftTable[stringArr[patternIndex + strIndex]] {
+            strIndex += shifVal
         } else {
-            strIndex += pattArr.count
+            strIndex += pattern.count
         }
     }
-
     return -1
 }
 
+print(patternMatching(string: "This is happening", pattern: "happen"))
 
 print(patternMatching(string: "You can wrap your React Native view in a ScrollView component. This guarantees that your content will always be available and it won't overlap with native views. React Native allows you to determine, in JS, the size of the RN app and provide it to the owner of the hosting RCTRootView. The owner is then responsible for re-laying out the subviews and keeping the UI consistent. We achieve this with RCTRootView's flexibility modes.", pattern: "The owner is then responsible"))

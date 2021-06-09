@@ -36,22 +36,59 @@ public class BinaryTree {
         }
         return nil
     }
+    
+    public var height: Int {
+        func ht(_ node: Node?) -> Int {
+            guard node != nil else { return 0 }
+            let depth = 1 + max(ht(node?.left), ht(node?.right))
+            return depth
+        }
+        
+        return ht(root)
+    }
+    
+    public var diameter: Int {
+        func dia(_ node: Node?, _ diaVal: inout Int) -> Int {
+            guard node != nil else { return 0 }
+            
+            let leftHt = dia(node?.left, &diaVal)
+            let rightHt = dia(node?.right, &diaVal)
+            
+            diaVal = max(diaVal, leftHt + rightHt + 1)
+            
+            let depth = 1 + max(leftHt, rightHt)
+            return depth
+        }
+        
+        var diaVal: Int = Int.min
+        _ = dia(root, &diaVal)
+        return diaVal
+    }
 
     public func disp() {
         guard let root = root else { return }
+        
+        var json: String = ""
+        
         var queue: [Node] = []
         queue.append(root)
         let delimNode = Node(val: Int.min)
         queue.append(delimNode)
+        
+        var dia = diameter
+        json += spaces(for: dia)
+
 
         while !queue.isEmpty {
 
             let node = queue.removeFirst()
             if node.val != delimNode.val {
-                print(node.val, terminator: " ")
+                json += "\(node.val)"
             } else if node.val == delimNode.val,
                 !queue.isEmpty {
-                print("")
+                dia -= 1
+                json += "\n"
+                json += spaces(for: dia)
                 queue.append(delimNode)
             }
 
@@ -62,6 +99,15 @@ public class BinaryTree {
                 queue.append(right)
             }
         }
-        print("")
+        print(json)
+    }
+    
+    func spaces(for dia: Int) -> String {
+        var str = ""
+        let spaceCount = dia
+        for _ in 0..<spaceCount {
+            str += " "
+        }
+        return str
     }
 }
