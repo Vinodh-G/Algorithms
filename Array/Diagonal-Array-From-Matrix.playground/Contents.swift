@@ -22,7 +22,7 @@ func getDiagonal(matrix: [[Int]]) -> [[Int]] {
     return result
 }
 
-//print(getDiagonal(matrix: matrix))
+print(getDiagonal(matrix: matrix))
 
 
 func printAntiDiag(matrix: [[Int]]) -> Void {
@@ -30,18 +30,15 @@ func printAntiDiag(matrix: [[Int]]) -> Void {
     
     var result: [[Int]] = Array(repeating: [], count: matrix.count * 2)
 
+
     for row in 0..<matrix.count {
-        for col in stride(from: matrix[0].count - 1, through: 0, by: -1) {
-            result[row + col].insert(matrix[matrix.count - 1 - row][col], at: 0)
+        for col in stride(from: matrix.count - 1, through: 0, by: -1) {
+            
+            let index = row + (matrix.count - 1 - col)
+            result[index].append(matrix[row][col])
         }
     }
-
-//    for index in stride(from: result.count - 1, through: 0, by: -1) {
-//        let subItems = result[index]
-//        if !subItems.isEmpty {
-//            subItems.forEach { print($0) }
-//        }
-//    }
+    
 
     print(result)
 }

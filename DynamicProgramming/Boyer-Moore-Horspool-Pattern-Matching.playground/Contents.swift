@@ -34,14 +34,17 @@ func patternMatching(string: String, pattern: String) -> Int {
         }
         
         
-        if let shifVal = shiftTable[stringArr[patternIndex + strIndex]] {
+        if let shifVal = shiftTable[stringArr[(pattern.count - 1) + strIndex]] {
             strIndex += shifVal
         } else {
             strIndex += pattern.count
         }
+        print(strIndex)
     }
     return -1
 }
+
+print(patternMatching(string: "aaaaa", pattern: "bba"))
 
 print(patternMatching(string: "This is happening", pattern: "happen"))
 
